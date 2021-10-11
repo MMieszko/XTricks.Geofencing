@@ -18,6 +18,8 @@ namespace XTricks.Geofencing.Droid
     public class LocationBackgroundService : Service, ILocationProvider
     {
         public const int WakeLockPermissionCode = 5555;
+        public const int FineLocationPermissions = 5556;
+        public const int ServiceId = 5555;
 
         private PowerManager.WakeLock _wakeLock;
         private LocationRequest _locationRequest;
@@ -53,12 +55,19 @@ namespace XTricks.Geofencing.Droid
             if (_wakeLock.IsHeld)
                 return StartCommandResult.Sticky;
 
-            var permissionCheck = ContextCompat.CheckSelfPermission(this, Manifest.Permission.WakeLock);
+            var wakeLockPremissions = ContextCompat.CheckSelfPermission(this, Manifest.Permission.WakeLock);
 
-            if (permissionCheck != Permission.Granted)
+            if (wakeLockPremissions != Permission.Granted)
                 ActivityCompat.RequestPermissions(Platform.CurrentActivity, new[] { Manifest.Permission.WakeLock }, WakeLockPermissionCode);
 
+            var locationPermissions = ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation);
+
+            if (locationPermissions != Permission.Granted)
+                ActivityCompat.RequestPermissions(Platform.CurrentActivity, new[] { Manifest.Permission.AccessFineLocation }, FineLocationPermissions);
+
             _wakeLock.Acquire();
+
+            StartForeground(ServiceId, Settings.LocationSettings.Notification);
 
             return StartCommandResult.Sticky;
         }
@@ -83,19 +92,41 @@ namespace XTricks.Geofencing.Droid
 
         public void Start()
         {
-            var activity = Platform.CurrentActivity;
+            try
+            {
+                var activity = Platform.CurrentActivity;
 
-            _intent = new Intent(activity, typeof(LocationBackgroundService));
+                _intent = new Intent(activity, typeof(LocationBackgroundService));
 
-            activity.StartForegroundService(_intent);
+                activity.StartService(_intent);
+            }
+            catch (Java.Lang.Exception ex)
+            {
+
+            }
+            catch (System.Exception ex)
+            {
+
+            }
         }
 
         public void Stop()
         {
-            var activity = Platform.CurrentActivity;
+            try
+            {
+                var activity = Platform.CurrentActivity;
 
-            if (activity != null && _intent != null)
-                activity.StopService(_intent);
+                if (activity != null && _intent != null)
+                    activity.StopService(_intent);
+            }
+            catch (Java.Lang.Exception ex)
+            {
+
+            }
+            catch (System.Exception ex)
+            {
+
+            }
         }
     }
 }

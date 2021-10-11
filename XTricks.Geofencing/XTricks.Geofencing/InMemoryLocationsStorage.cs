@@ -23,7 +23,7 @@ namespace XTricks.Geofencing.Storage
 
         public Task<List<LocationLog>> GetAsync()
         {
-            var result = _logs.ToList();
+            var result = _logs.Where(x => !(x is null)).ToList();
 
             return Task.FromResult(result);
         }

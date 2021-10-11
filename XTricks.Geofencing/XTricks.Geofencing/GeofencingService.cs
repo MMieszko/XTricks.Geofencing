@@ -21,18 +21,37 @@ namespace XTricks.Geofencing
         public event EventHandler<LocationChangedEventArgs> LocationChanged;
         public event EventHandler<LocationDetectedEventArgs> LocationDetected;
 
+        public bool IsRunning { get; private set; }
         public IReadOnlyCollection<MonitoredLocation> MonitoredLocations => _monitoredLocations.AsReadOnly();
 
-        public static GeofencingService Instance => _instance = new GeofencingService(new InMemoryLocationsStorage());
+        private GeofencingService()
+        {
+
+        }
+
+        public static GeofencingService Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new GeofencingService(new InMemoryLocationsStorage());
+
+                return _instance;
+            }
+        }
 
         public void Start()
         {
             LocationProvider.Start();
+
+            IsRunning = true;
         }
 
         public void Stop()
         {
             LocationProvider.Stop();
+
+            IsRunning = false;
         }
 
         public async Task PauseAsync(TimeSpan delay, CancellationToken token = default)
@@ -59,11 +78,11 @@ namespace XTricks.Geofencing
 
         public async Task LocationChangedAsync(LocationLog log)
         {
-            this.LocationChanged.Invoke(this, new LocationChangedEventArgs(log));
+            this.LocationChanged?.Invoke(this, new LocationChangedEventArgs(log));
 
             await _locationLogsStorage.AddAsync(log);
 
-            if (MonitoredLocations.Any())
+            if (this.MonitoredLocations.Count == 0)
                 return;
 
             var logs = await _locationLogsStorage.GetAsync();
@@ -76,7 +95,7 @@ namespace XTricks.Geofencing
                 if (result == GeofenceDirection.None)
                     continue;
 
-                LocationDetected.Invoke(this, new LocationDetectedEventArgs(location, result));
+                LocationDetected?.Invoke(this, new LocationDetectedEventArgs(location, result));
 
                 locationsToRemove.Add(location);
             }
