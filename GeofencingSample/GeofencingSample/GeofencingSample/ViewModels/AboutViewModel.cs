@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Plugin.Permissions;
+using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -10,12 +12,76 @@ namespace GeofencingSample.ViewModels
 {
     public class AboutViewModel : BaseViewModel
     {
+        private MonitoredLocation _monitoredLocation;
+        private ILocation _lastLocation;
+        private bool _isRunning;
+        private GeofenceDirection _geofenceStatus;
+
+        public ICommand StartGeofencingCommand { get; }
+        public ICommand StopGoefencingCommand { get; }
+
+        public GeofenceDirection GeofenceStatus
+        {
+            get
+            {
+                return _geofenceStatus;
+            }
+            set
+            {
+                _geofenceStatus = value;
+                OnPropertyChanged("GeofenceStatus");
+            }
+        }
+
+        public bool IsRunning
+        {
+            get
+            {
+                return _isRunning;
+            }
+            set
+            {
+                _isRunning = value;
+                OnPropertyChanged("IsRunning");
+            }
+        }
+
+        public ILocation LastLocation
+        {
+            get
+            {
+                return _lastLocation;
+            }
+            set
+            {
+                _lastLocation = value;
+                OnPropertyChanged("LastLocation");
+            }
+        }
+
+        public MonitoredLocation MonitoredLocation
+        {
+            get
+            {
+                return _monitoredLocation;
+            }
+            set
+            {
+                _monitoredLocation = value;
+
+                OnPropertyChanged("MonitoredLocation");
+            }
+        }
 
         public AboutViewModel()
         {
-            Title = "Stopped";
-            StartGeofencingCommand = new Command(StartGeofencing);
+            Title = "Geofencing service";
+            GeofenceStatus = GeofenceDirection.None;
+            StartGeofencingCommand = new Command(async () => await StartGeofencing());
             StopGoefencingCommand = new Command(StopGeofencing);
+
+            GeofencingService.Instance.LocationChanged += LocationChanged;
+            GeofencingService.Instance.LocationDetected += GeofenceFired;
         }
 
         private void StopGeofencing(object obj)
@@ -23,36 +89,41 @@ namespace GeofencingSample.ViewModels
             if (!GeofencingService.Instance.IsRunning)
             {
                 GeofencingService.Instance.Stop();
-                this.Title = "Stopped";
+                IsRunning = false;
             }
         }
 
-        private void StartGeofencing(object obj)
+        private async Task StartGeofencing()
         {
             var locationToMonitor = new MonitoredLocation(1, new LocationLog(51.759118, 19.45568, 0), Distance.FromMeters(50), Distance.FromMeters(150), GeofenceDirection.Enter | GeofenceDirection.Exit);
 
             GeofencingService.Instance.AddLocation(locationToMonitor);
 
-            GeofencingService.Instance.LocationDetected += GeofenceFired;
+            var startResult = GeofencingService.Instance.Start();
 
-            GeofencingService.Instance.Start();
+            if (startResult.Succeeded)
+            {
+                IsRunning = true;
+            }
+            else if (startResult.Type == StartFailureType.MissingPermissions)
+            {
+                var status = await CrossPermissions.Current.RequestPermissionAsync<LocationPermission>();
 
-            this.Title = "Started";
+                if (status == Plugin.Permissions.Abstractions.PermissionStatus.Granted)
+                {
+                    await StartGeofencing();
+                }
+            }
+        }
+
+        private void LocationChanged(object sender, LocationChangedEventArgs e)
+        {
+            LastLocation = e.Location;
         }
 
         private void GeofenceFired(object sender, LocationDetectedEventArgs e)
         {
-            if (e.Direction == GeofenceDirection.Enter)
-            {
-                Title = "Entered";
-            }
-            else
-            {
-                Title = "Exited";
-            }
+            this.GeofenceStatus = e.Direction;
         }
-
-        public ICommand StartGeofencingCommand { get; }
-        public ICommand StopGoefencingCommand { get; }
     }
 }

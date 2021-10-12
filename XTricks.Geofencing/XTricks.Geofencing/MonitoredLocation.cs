@@ -36,7 +36,7 @@ namespace XTricks.Geofencing
         public bool RemoveAfterDetected { get; }
         public virtual ILocationDetector Detector => new LocationDetector(this);
 
-        public MonitoredLocation(object key, ILocation location, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation)
+        public MonitoredLocation(object key, double latitude, double longitude, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation)
         {
             if (radiusEnter >= radiusExit)
                 throw new ArgumentException("Enter radius cannot be higher or equal to radius exit");
@@ -44,18 +44,21 @@ namespace XTricks.Geofencing
             if (key == null)
                 throw new ArgumentException("Key of location cannot be null");
 
-            if (location == null)
-                throw new ArgumentException("Location cannot be null");
-
             this.Key = key;
-            this.Location = location;
+            this.Location = new LocationLog(latitude, longitude);
             this.RadiusEnter = radiusEnter;
             this.RadiusExit = radiusExit;
             this.Expectation = expectation;
         }
 
+        public MonitoredLocation(object key, ILocation location, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation)
+                : this(key, location.Latitude, location.Longitude, radiusEnter, radiusExit, expectation)
+        {
+
+        }
+
         public MonitoredLocation(object key, ILocation location, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation, bool remove)
-            :this(key, location, radiusEnter, radiusExit, expectation)
+            : this(key, location, radiusEnter, radiusExit, expectation)
         {
             this.RemoveAfterDetected = remove;
         }

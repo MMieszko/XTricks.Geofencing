@@ -2,7 +2,7 @@
 {
     public interface ILocationProvider
     {
-        void Start();
+        StartResult Start();
         void Stop();
     }
 }

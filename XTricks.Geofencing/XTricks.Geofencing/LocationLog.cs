@@ -15,19 +15,23 @@ namespace XTricks.Geofencing
 
         }
 
-        public LocationLog(double lat, double lng, double acc)
-        {
-            this.Latitude = lat;
-            this.Longitude = lng;
-            this.Accuracy = acc;
-        }
-
         public LocationLog(double lat, double lng, double acc, DateTime date)
         {
             this.Latitude = lat;
             this.Longitude = lng;
             this.Accuracy = acc;
             this.DateTime = date;
+        }
+
+        public LocationLog(double lat, double lng, double acc)
+                : this(lat, lng, acc, default)
+        {
+        }
+
+        public LocationLog(double lat, double lng)
+                : this(lat, lng, default, default)
+        {
+
         }
     }
 }

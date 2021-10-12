@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using XTricks.Geofencing.CrossInterfaces;
+using XTricks.Geofencing.Droid;
 using XTricks.Geofencing.Storage;
 using XTricks.Shared.Contracts;
 
@@ -40,11 +41,29 @@ namespace XTricks.Geofencing
             }
         }
 
-        public void Start()
+        public StartResult Start()
         {
-            LocationProvider.Start();
+            try
+            {
+                var permissionsManager = DependencyService.Get<IPermissionsManager>();
+                var permissionCheckResult = permissionsManager.Check();
 
-            IsRunning = true;
+                if (!permissionCheckResult)
+                    return StartResult.CreateFailed(StartFailureType.MissingPermissions, null, permissionCheckResult.MissingPermission);
+
+                var result = LocationProvider.Start();
+
+                if (!result.Succeeded)
+                    return result;
+
+                IsRunning = true;
+
+                return StartResult.CreateSucceeded();
+            }
+            catch (Exception ex)
+            {
+                return StartResult.CreateFailed(StartFailureType.Other, ex);
+            }
         }
 
         public void Stop()
@@ -97,7 +116,8 @@ namespace XTricks.Geofencing
 
                 LocationDetected?.Invoke(this, new LocationDetectedEventArgs(location, result));
 
-                locationsToRemove.Add(location);
+                if (location.RemoveAfterDetected)
+                    locationsToRemove.Add(location);
             }
 
             if (!locationsToRemove.Any())
