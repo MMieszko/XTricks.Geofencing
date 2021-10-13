@@ -24,12 +24,12 @@ namespace XTricks.Geofencing
         }
 
         public LocationLog(double lat, double lng, double acc)
-                : this(lat, lng, acc, default)
+           : this(lat, lng, acc, default)
         {
         }
 
         public LocationLog(double lat, double lng)
-                : this(lat, lng, default, default)
+           : this(lat, lng, default, default)
         {
 
         }

@@ -61,6 +61,10 @@
                         Command="{Binding StopGoefencingCommand}"
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="Red" />
+                <Button Margin="0,10,0,0" Text="Pause geofencing"
+                        Command="{Binding PauseGeofencingCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="Orange" />
             </StackLayout>
         </ScrollView>
     </Grid>

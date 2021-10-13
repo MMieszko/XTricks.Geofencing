@@ -90,7 +90,9 @@ namespace XTricks.Geofencing.Droid
 
                 activity.StartService(_intent);
 
-                return StartResult.CreateSucceeded();
+                var result = StartResult.CreateSucceeded();
+
+                return result;
             }
             catch (Exception ex)
             {

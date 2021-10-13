@@ -19,10 +19,30 @@ namespace XTricks.Geofencing
         private readonly ILocationLogsStorage _locationLogsStorage;
         private readonly List<MonitoredLocation> _monitoredLocations;
 
+        /// <summary>
+        /// Fires whenever new location from device appeared to use by geofencing
+        /// </summary>
         public event EventHandler<LocationChangedEventArgs> LocationChanged;
+
+        /// <summary>
+        /// Fires whenever any <see cref="MonitoredLocation"/> is being catched as <see cref="GeofenceDirection.Exit"/> or <see cref="GeofenceDirection.Enter"/>
+        /// </summary>
         public event EventHandler<LocationDetectedEventArgs> LocationDetected;
 
+        /// <summary>
+        /// Provides information if GeofencingService is being paused.
+        /// </summary>
+        public bool IsPaused { get; private set; }
+
+        /// <summary>
+        /// Provides information if GeofencingService is running. 
+        /// Notice that IsRunning is set to false when <see cref="PauseAsync(TimeSpan, CancellationToken)"/> is requested.
+        /// </summary>
         public bool IsRunning { get; private set; }
+
+        /// <summary>
+        /// Provicdes the readonly collection of current monitored locations
+        /// </summary>
         public IReadOnlyCollection<MonitoredLocation> MonitoredLocations => _monitoredLocations.AsReadOnly();
 
         private GeofencingService()
@@ -41,6 +61,16 @@ namespace XTricks.Geofencing
             }
         }
 
+        internal GeofencingService(ILocationLogsStorage storage)
+        {
+            _monitoredLocations = new List<MonitoredLocation>();
+            _locationLogsStorage = storage;
+        }
+
+        /// <summary>
+        /// Starts the service
+        /// </summary>
+        /// <returns>Returns <see cref="StartResult"/> which brings the information if start became succeeded else provides information about the failure</returns>
         public StartResult Start()
         {
             try
@@ -66,18 +96,33 @@ namespace XTricks.Geofencing
             }
         }
 
+        /// <summary>
+        /// Stops the service
+        /// </summary>
         public void Stop()
         {
             LocationProvider.Stop();
 
             IsRunning = false;
+            IsPaused = false;
         }
 
+        /// <summary>
+        /// Pauses the services. Pause is basically turning off and turnign on after given period of time
+        /// </summary>
+        /// <param name="delay">Puase duration</param>
+        /// <param name="token">Token and its cancellation which is able to break the delay and bring back service running immeadetly</param>
+        /// <returns></returns>
         public async Task PauseAsync(TimeSpan delay, CancellationToken token = default)
         {
             try
             {
+                if (this.IsPaused || !this.IsRunning)
+                    return;
+
                 this.Stop();
+
+                this.IsPaused = true;
 
                 await Task.Delay(delay, token);
 
@@ -86,16 +131,76 @@ namespace XTricks.Geofencing
             catch (TaskCanceledException)
             {
                 this.Start();
+                this.IsPaused = false;
             }
         }
 
-        internal GeofencingService(ILocationLogsStorage storage)
+        /// <summary>
+        /// Return <see cref="MonitoredLocation"/> whenever service contains it
+        /// If such location does not exists the method will return null.
+        /// </summary>
+        /// <param name="key">Key identitifer of <see cref="MonitoredLocation"/></param>
+        /// <returns>Monitored location</returns>
+        public MonitoredLocation GetLocation(object key)
         {
-            _monitoredLocations = new List<MonitoredLocation>();
-            _locationLogsStorage = storage;
+            return _monitoredLocations.FirstOrDefault(x => x.Key == key);
         }
 
-        public async Task LocationChangedAsync(LocationLog log)
+        /// <summary>
+        /// Adds <see cref="MonitoredLocation"/> into service
+        /// If key of given location already exists then the location will be replaced.
+        /// </summary>
+        public void AddLocation(MonitoredLocation location)
+        {
+            if (location == null)
+                throw new ArgumentNullException(nameof(location));
+
+            if (this.GetLocation(location.Key) != null)
+            {
+                this.RemoveLocation(location.Key);
+            }
+
+            this._monitoredLocations.Add(location);
+        }
+
+        /// <summary>
+        /// Adds collection of <see cref="MonitoredLocation"/> into service.
+        /// Reuses the method <see cref="AddLocation(MonitoredLocation)"/>
+        /// </summary>
+        /// <param name="monitoredLocations"></param>
+        public void AddLocations(IEnumerable<MonitoredLocation> monitoredLocations)
+        {
+            foreach (var location in monitoredLocations)
+                this.AddLocation(location);
+        }
+
+        /// <summary>
+        /// Removed monitored location by given key.
+        /// If location is not found the method will do nothing
+        /// </summary>
+        public void RemoveLocation(object key)
+        {
+            var existing = this.GetLocation(key);
+
+            if (existing == null)
+                return;
+
+            this._monitoredLocations.Remove(existing);
+        }
+
+        /// <summary>
+        /// Removed monitored location
+        /// If location is not found the method will do nothing
+        /// </summary>
+        public void RemoveLocation(MonitoredLocation location)
+        {
+            if (location == null)
+                return;
+
+            this.RemoveLocation(location.Key);
+        }
+
+        internal async Task LocationChangedAsync(LocationLog log)
         {
             this.LocationChanged?.Invoke(this, new LocationChangedEventArgs(log));
 
@@ -125,34 +230,6 @@ namespace XTricks.Geofencing
 
             foreach (var location in locationsToRemove)
                 this.RemoveLocation(location.Key);
-        }
-
-        public MonitoredLocation GetLocation(object key)
-        {
-            return _monitoredLocations.FirstOrDefault(x => x.Key == key);
-        }
-
-        public void AddLocation(MonitoredLocation location)
-        {
-            if (location == null)
-                throw new ArgumentException("Provided location is null");
-
-            if (this.GetLocation(location.Key) != null)
-            {
-                this.RemoveLocation(location.Key);
-            }
-
-            this._monitoredLocations.Add(location);
-        }
-
-        public void RemoveLocation(object key)
-        {
-            var existing = this.GetLocation(key);
-
-            if (existing == null)
-                return;
-
-            this._monitoredLocations.Remove(existing);
         }
     }
 }

@@ -13,10 +13,5 @@ namespace XTricks.Geofencing.Droid
 
             await GeofencingService.Instance.LocationChangedAsync(log);
         }
-
-        public override void OnLocationAvailability(LocationAvailability locationAvailability)
-        {
-            base.OnLocationAvailability(locationAvailability);
-        }
     }
 }

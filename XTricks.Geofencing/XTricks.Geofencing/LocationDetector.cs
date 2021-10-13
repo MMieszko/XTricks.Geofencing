@@ -17,7 +17,7 @@ namespace XTricks.Geofencing
 
         public GeofenceDirection Detect(List<ILocation> coordinates)
         {
-            if (coordinates.Count <= 2)
+            if (coordinates.Count < 2)
                 return GeofenceDirection.None;
 
             if (this.LocationExpectation.HasFlag(GeofenceDirection.Enter))

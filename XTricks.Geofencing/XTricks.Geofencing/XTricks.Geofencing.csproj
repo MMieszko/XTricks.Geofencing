@@ -5,6 +5,12 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <Authors>Mieszko Misztal</Authors>
     <Company />
+    <PackageProjectUrl>https://github.com/MMieszko/XTricks.Geofencing</PackageProjectUrl>
+    <PackageIcon>xtricks_logo.png</PackageIcon>
+    <RepositoryUrl>https://github.com/MMieszko/XTricks.Geofencing</RepositoryUrl>
+    <PackageTags>xamarin.forms android xamrain geofancing background location gathering</PackageTags>
+    <Description>Xamarin forms library which allow to easy with quick startup use background geofencing. Monitor any locations with any range and get notified anytime your application needs it.</Description>
+    <PackageLicenseFile>mit_license.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -16,5 +22,16 @@
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
     <PackageReference Include="XTricks.Shared" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\mit_license.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\xtricks_logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 </Project>

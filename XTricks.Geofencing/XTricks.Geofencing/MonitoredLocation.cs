@@ -36,7 +36,7 @@ namespace XTricks.Geofencing
         public bool RemoveAfterDetected { get; }
         public virtual ILocationDetector Detector => new LocationDetector(this);
 
-        public MonitoredLocation(object key, double latitude, double longitude, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation)
+        public MonitoredLocation(object key, double latitude, double longitude, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation, bool remove)
         {
             if (radiusEnter >= radiusExit)
                 throw new ArgumentException("Enter radius cannot be higher or equal to radius exit");
@@ -49,18 +49,25 @@ namespace XTricks.Geofencing
             this.RadiusEnter = radiusEnter;
             this.RadiusExit = radiusExit;
             this.Expectation = expectation;
+            this.RemoveAfterDetected = remove;
         }
 
-        public MonitoredLocation(object key, ILocation location, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation)
-                : this(key, location.Latitude, location.Longitude, radiusEnter, radiusExit, expectation)
+        public MonitoredLocation(object key, double latitude, double longitude, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation)
+                 : this(key, latitude, longitude, radiusEnter, radiusExit, expectation, false)
         {
 
         }
 
         public MonitoredLocation(object key, ILocation location, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation, bool remove)
-            : this(key, location, radiusEnter, radiusExit, expectation)
+                : this(key, location.Latitude, location.Longitude, radiusEnter, radiusExit, expectation, remove)
         {
-            this.RemoveAfterDetected = remove;
+
+        }
+
+        public MonitoredLocation(object key, ILocation location, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation)
+            : this(key, location, radiusEnter, radiusExit, expectation, false)
+        {
+
         }
     }
 }

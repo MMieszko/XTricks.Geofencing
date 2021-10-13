@@ -18,6 +18,7 @@ namespace GeofencingSample.ViewModels
         private GeofenceDirection _geofenceStatus;
 
         public ICommand StartGeofencingCommand { get; }
+        public ICommand PauseGeofencingCommand { get; }
         public ICommand StopGoefencingCommand { get; }
 
         public GeofenceDirection GeofenceStatus
@@ -77,23 +78,29 @@ namespace GeofencingSample.ViewModels
         {
             Title = "Geofencing service";
             GeofenceStatus = GeofenceDirection.None;
-            StartGeofencingCommand = new Command(async () => await StartGeofencing());
+            StartGeofencingCommand = new Command(async () => await StartGeofencingAsync());
             StopGoefencingCommand = new Command(StopGeofencing);
+            PauseGeofencingCommand = new Command(async () => await PauseGeofencingAsync());
 
             GeofencingService.Instance.LocationChanged += LocationChanged;
             GeofencingService.Instance.LocationDetected += GeofenceFired;
         }
 
+        private async Task PauseGeofencingAsync()
+        {
+            await GeofencingService.Instance.PauseAsync(TimeSpan.FromSeconds(10));
+        }
+
         private void StopGeofencing(object obj)
         {
-            if (!GeofencingService.Instance.IsRunning)
+            if (GeofencingService.Instance.IsRunning)
             {
                 GeofencingService.Instance.Stop();
                 IsRunning = false;
             }
         }
 
-        private async Task StartGeofencing()
+        private async Task StartGeofencingAsync()
         {
             var locationToMonitor = new MonitoredLocation(1, new LocationLog(51.759118, 19.45568, 0), Distance.FromMeters(50), Distance.FromMeters(150), GeofenceDirection.Enter | GeofenceDirection.Exit);
 
@@ -111,7 +118,7 @@ namespace GeofencingSample.ViewModels
 
                 if (status == Plugin.Permissions.Abstractions.PermissionStatus.Granted)
                 {
-                    await StartGeofencing();
+                    await StartGeofencingAsync();
                 }
             }
         }
