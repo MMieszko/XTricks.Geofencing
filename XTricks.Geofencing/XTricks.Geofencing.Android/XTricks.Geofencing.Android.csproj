@@ -73,12 +73,14 @@
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\XTricks.Geofencing\XTricks.Geofencing.csproj">
       <Project>{1562C39B-B08C-468E-B174-95F74F546984}</Project>
       <Name>XTricks.Geofencing</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="mit_license.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

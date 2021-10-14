@@ -25,10 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\mit_license.txt">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
     <None Include="..\..\xtricks_logo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>

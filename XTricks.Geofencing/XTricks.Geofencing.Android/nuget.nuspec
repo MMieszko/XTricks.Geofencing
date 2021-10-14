@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<package>
+  <metadata>
+    <id>XTricks.Geofencing.Android</id>
+    <version>0.0.9</version>
+    <title>XTricks.Geofencing.Android</title>
+    <authors>Mieszko Misztal</authors>
+    <owners>Mieszko Misztal</owners>
+    <license type="file">mit_license.txt</license>
+    <projectUrl>https://github.com/MMieszko/XTricks.Geofencing</projectUrl>
+    <iconUrl>https://github.com/MMieszko/XTricks.Shared/blob/master/Resources/xtricks_logo.png?raw=true</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Xamarin.Forms Android library to setup the Geofencing Service</description>
+    <releaseNotes>Initial 0.0.9 release</releaseNotes>
+    <tags>xamarin android geofencing location background</tags>
+    <dependencies>
+      <dependency id="XTricks.Geofencing" version="0.0.9" />
+    </dependencies>
+    <summary> Xamarin.Forms Android library to setup the Geofencing Service </summary>
+  </metadata>
+</package>
