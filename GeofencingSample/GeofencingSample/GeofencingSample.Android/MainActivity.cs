@@ -5,7 +5,6 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using XTricks.Geofencing.Droid;
-using Android.Content;
 using AndroidX.Core.App;
 using Plugin.Permissions;
 

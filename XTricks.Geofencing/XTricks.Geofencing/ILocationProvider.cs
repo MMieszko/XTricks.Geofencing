@@ -1,4 +1,4 @@
-﻿namespace XTricks.Geofencing.CrossInterfaces
+﻿namespace XTricks.Geofencing
 {
     public interface ILocationProvider
     {

@@ -1,17 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XTricks.Shared.Collections;
 
-namespace XTricks.Geofencing.Storage
+namespace XTricks.Geofencing
 {
     public class InMemoryLocationsStorage : ILocationLogsStorage
     {
         private readonly SinkStack<LocationLog> _logs;
 
-        public InMemoryLocationsStorage()
+        public InMemoryLocationsStorage(int maximumCapacity)
         {
-            _logs = new SinkStack<LocationLog>(20);
+            if (maximumCapacity <= 1)
+                throw new ArgumentException("Capacity cannot be less or equal 1");
+
+            _logs = new SinkStack<LocationLog>(maximumCapacity);
         }
 
         public Task AddAsync(LocationLog location)

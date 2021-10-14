@@ -1,8 +1,8 @@
 ﻿using Plugin.Permissions;
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using XTricks.Geofencing;
 using XTricks.Shared.Contracts;
@@ -16,17 +16,25 @@ namespace GeofencingSample.ViewModels
         private ILocation _lastLocation;
         private bool _isRunning;
         private GeofenceDirection _geofenceStatus;
+        private ObservableCollection<string> _logs;
 
         public ICommand StartGeofencingCommand { get; }
         public ICommand PauseGeofencingCommand { get; }
-        public ICommand StopGoefencingCommand { get; }
+        public ICommand StopGeofencingCommand { get; }
+
+        public ObservableCollection<string> Logs
+        {
+            get => _logs;
+            set
+            {
+                _logs = value;
+                OnPropertyChanged("Logs");
+            }
+        }
 
         public GeofenceDirection GeofenceStatus
         {
-            get
-            {
-                return _geofenceStatus;
-            }
+            get => _geofenceStatus;
             set
             {
                 _geofenceStatus = value;
@@ -36,10 +44,7 @@ namespace GeofencingSample.ViewModels
 
         public bool IsRunning
         {
-            get
-            {
-                return _isRunning;
-            }
+            get => _isRunning;
             set
             {
                 _isRunning = value;
@@ -49,10 +54,7 @@ namespace GeofencingSample.ViewModels
 
         public ILocation LastLocation
         {
-            get
-            {
-                return _lastLocation;
-            }
+            get => _lastLocation;
             set
             {
                 _lastLocation = value;
@@ -77,13 +79,23 @@ namespace GeofencingSample.ViewModels
         public AboutViewModel()
         {
             Title = "Geofencing service";
+
             GeofenceStatus = GeofenceDirection.None;
             StartGeofencingCommand = new Command(async () => await StartGeofencingAsync());
-            StopGoefencingCommand = new Command(StopGeofencing);
+            StopGeofencingCommand = new Command(StopGeofencing);
             PauseGeofencingCommand = new Command(async () => await PauseGeofencingAsync());
+            Logs = new ObservableCollection<string>();
 
             GeofencingService.Instance.LocationChanged += LocationChanged;
             GeofencingService.Instance.LocationDetected += GeofenceFired;
+
+            var lidl = new MonitoredLocation("Lidl", 51.6174298, 15.3111643, Distance.FromMeters(100), Distance.FromMeters(200), GeofenceDirection.Enter | GeofenceDirection.Exit);
+            var dom = new MonitoredLocation("Dom", 51.6127332, 15.322100, Distance.FromMeters(100), Distance.FromMeters(200), GeofenceDirection.Enter | GeofenceDirection.Exit);
+            var polo = new MonitoredLocation("Polo", 51.6127328, 15.331042, Distance.FromMeters(100), Distance.FromMeters(200), GeofenceDirection.Enter | GeofenceDirection.Exit);
+            var kaufland = new MonitoredLocation("Kaufland", 51.6163051, 15.313698, Distance.FromMeters(100), Distance.FromMeters(200), GeofenceDirection.Enter | GeofenceDirection.Exit);
+
+
+            GeofencingService.Instance.AddLocations(new[] { lidl, dom, polo, kaufland });
         }
 
         private async Task PauseGeofencingAsync()
@@ -102,10 +114,6 @@ namespace GeofencingSample.ViewModels
 
         private async Task StartGeofencingAsync()
         {
-            var locationToMonitor = new MonitoredLocation(1, new LocationLog(51.759118, 19.45568, 0), Distance.FromMeters(50), Distance.FromMeters(150), GeofenceDirection.Enter | GeofenceDirection.Exit);
-
-            GeofencingService.Instance.AddLocation(locationToMonitor);
-
             var startResult = GeofencingService.Instance.Start();
 
             if (startResult.Succeeded)
@@ -130,7 +138,18 @@ namespace GeofencingSample.ViewModels
 
         private void GeofenceFired(object sender, LocationDetectedEventArgs e)
         {
+            this.Logs.Add($"[{e.DateTime.Hour}:{e.DateTime.Minute}:{e.DateTime.Second}]  [{e.Location.Key}] ->  [{e.Direction}]");
+
             this.GeofenceStatus = e.Direction;
+
+            if (e.Direction == GeofenceDirection.Enter)
+            {
+                GeofencingService.Instance.AddLocation(new MonitoredLocation(e.Location.Key, e.Location.Location, e.Location.RadiusEnter, e.Location.RadiusExit, GeofenceDirection.Exit));
+            }
+            else if (e.Direction == GeofenceDirection.Exit)
+            {
+                GeofencingService.Instance.AddLocation(new MonitoredLocation(e.Location.Key, e.Location.Location, e.Location.RadiusEnter, e.Location.RadiusExit, GeofenceDirection.Enter));
+            }
         }
     }
 }

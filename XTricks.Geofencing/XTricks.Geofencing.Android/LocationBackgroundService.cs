@@ -1,16 +1,10 @@
-﻿using Android;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.Content.PM;
 using Android.Gms.Location;
 using Android.OS;
 using Android.Runtime;
-using AndroidX.Core.App;
-using AndroidX.Core.Content;
 using System;
 using Xamarin.Essentials;
-using Xamarin.Forms;
-using XTricks.Geofencing.CrossInterfaces;
 using XTricks.Geofencing.Droid;
 
 [assembly: Xamarin.Forms.Dependency(typeof(LocationBackgroundService))]
@@ -49,8 +43,7 @@ namespace XTricks.Geofencing.Droid
 
             var powerManager = (PowerManager)GetSystemService(PowerService);
 
-            if (_wakeLock == null)
-                _wakeLock = powerManager.NewWakeLock(WakeLockFlags.Partial, "GeofencingWakeLock");
+            _wakeLock ??= powerManager.NewWakeLock(WakeLockFlags.Partial, "GeofencingWakeLock");
 
             if (_wakeLock.IsHeld)
                 return StartCommandResult.Sticky;
@@ -60,6 +53,13 @@ namespace XTricks.Geofencing.Droid
             StartForeground(ServiceId, Settings.LocationSettings.Notification);
 
             return StartCommandResult.Sticky;
+        }
+
+        public override void OnTaskRemoved(Intent? rootIntent)
+        {
+            StopSelf();
+
+            base.OnTaskRemoved(rootIntent);
         }
 
         public override void OnDestroy()

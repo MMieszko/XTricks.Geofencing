@@ -1,8 +1,8 @@
-﻿namespace XTricks.Geofencing.Droid
+﻿namespace XTricks.Geofencing
 {
     public class PermissionCheckResult
     {
-        public bool Suceeded { get; private set; }
+        public bool Succeeded { get; private set; }
         public string MissingPermission { get; private set; }
 
         private PermissionCheckResult()
@@ -12,10 +12,10 @@
 
         public static implicit operator bool(PermissionCheckResult value)
         {
-            return value.Suceeded;
+            return value.Succeeded;
         }
 
-        public static PermissionCheckResult CreateSucceeded() => new PermissionCheckResult { Suceeded = true };
+        public static PermissionCheckResult CreateSucceeded() => new PermissionCheckResult { Succeeded = true };
         public static PermissionCheckResult CreateFailed(string missing) => new PermissionCheckResult { MissingPermission = missing };
     }
 }

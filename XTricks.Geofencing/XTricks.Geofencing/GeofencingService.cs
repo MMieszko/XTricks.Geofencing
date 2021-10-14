@@ -4,17 +4,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using XTricks.Geofencing.CrossInterfaces;
-using XTricks.Geofencing.Droid;
-using XTricks.Geofencing.Storage;
 using XTricks.Shared.Contracts;
 
 namespace XTricks.Geofencing
 {
     public sealed class GeofencingService
     {
+        private static SemaphoreSlim _semaphore;
         private static GeofencingService _instance;
-        private ILocationProvider LocationProvider => DependencyService.Get<ILocationProvider>();
+        private static ILocationProvider LocationProvider => DependencyService.Get<ILocationProvider>();
 
         private readonly ILocationLogsStorage _locationLogsStorage;
         private readonly List<MonitoredLocation> _monitoredLocations;
@@ -25,7 +23,8 @@ namespace XTricks.Geofencing
         public event EventHandler<LocationChangedEventArgs> LocationChanged;
 
         /// <summary>
-        /// Fires whenever any <see cref="MonitoredLocation"/> is being catched as <see cref="GeofenceDirection.Exit"/> or <see cref="GeofenceDirection.Enter"/>
+        /// Fires whenever any <see cref="MonitoredLocation"/> is being catch as <see cref="GeofenceDirection.Exit"/> or <see cref="GeofenceDirection.Enter"/>
+        /// When monitored location is detected it automatically gets removed from search
         /// </summary>
         public event EventHandler<LocationDetectedEventArgs> LocationDetected;
 
@@ -50,12 +49,17 @@ namespace XTricks.Geofencing
 
         }
 
+        static GeofencingService()
+        {
+            _semaphore = new SemaphoreSlim(1);
+        }
+
         public static GeofencingService Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new GeofencingService(new InMemoryLocationsStorage());
+                    _instance = new GeofencingService(new InMemoryLocationsStorage(20));
 
                 return _instance;
             }
@@ -189,7 +193,7 @@ namespace XTricks.Geofencing
         }
 
         /// <summary>
-        /// Removed monitored location
+        /// Removes monitored location
         /// If location is not found the method will do nothing
         /// </summary>
         public void RemoveLocation(MonitoredLocation location)
@@ -200,36 +204,63 @@ namespace XTricks.Geofencing
             this.RemoveLocation(location.Key);
         }
 
+        /// <summary>
+        /// Removes given locations.
+        /// Reuses <see cref="RemoveLocation(object)"/> method
+        /// </summary>
+        /// <param name="locations"></param>
+        public void RemoveLocations(IEnumerable<MonitoredLocation> locations)
+        {
+            foreach (var location in locations)
+                this.RemoveLocation(location);
+        }
+
+        /// <summary>
+        /// Removes all monitoring locations
+        /// </summary>
+        public void RemoveLocations()
+        {
+            this._monitoredLocations.Clear();
+        }
+
         internal async Task LocationChangedAsync(LocationLog log)
         {
-            this.LocationChanged?.Invoke(this, new LocationChangedEventArgs(log));
-
-            await _locationLogsStorage.AddAsync(log);
-
-            if (this.MonitoredLocations.Count == 0)
-                return;
-
-            var logs = await _locationLogsStorage.GetAsync();
-            var locationsToRemove = new List<MonitoredLocation>();
-
-            foreach (var location in MonitoredLocations)
+            try
             {
-                var result = location.Detector.Detect(logs.Cast<ILocation>().ToList());
+                await _semaphore.WaitAsync();
 
-                if (result == GeofenceDirection.None)
-                    continue;
+                this.LocationChanged?.Invoke(this, new LocationChangedEventArgs(log));
 
-                LocationDetected?.Invoke(this, new LocationDetectedEventArgs(location, result));
+                await _locationLogsStorage.AddAsync(log);
 
-                if (location.RemoveAfterDetected)
-                    locationsToRemove.Add(location);
+                if (this.MonitoredLocations.Count == 0)
+                    return;
+
+                var logs = await _locationLogsStorage.GetAsync();
+
+                var triggers = new Dictionary<MonitoredLocation, GeofenceDirection>();
+
+                foreach (var location in MonitoredLocations)
+                {
+                    var result = location.Detector.Detect(logs.Cast<ILocation>().ToList());
+
+                    if (result == GeofenceDirection.None)
+                        continue;
+
+                    triggers.Add(location, result);
+                }
+
+                this.RemoveLocations(triggers.Select(x => x.Key));
+
+                foreach (var trigger in triggers)
+                {
+                    LocationDetected?.Invoke(this, new LocationDetectedEventArgs(trigger.Key, trigger.Value));
+                }
             }
-
-            if (!locationsToRemove.Any())
-                return;
-
-            foreach (var location in locationsToRemove)
-                this.RemoveLocation(location.Key);
+            finally
+            {
+                _semaphore.Release();
+            }
         }
     }
 }

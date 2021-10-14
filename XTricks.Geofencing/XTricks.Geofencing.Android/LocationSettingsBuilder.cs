@@ -5,7 +5,7 @@ namespace XTricks.Geofencing.Droid
 {
     public class LocationSettingsBuilder
     {
-        private LocationSettings _settings;
+        private readonly LocationSettings _settings;
 
         internal LocationSettingsBuilder()
         {

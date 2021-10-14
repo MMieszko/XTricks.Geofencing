@@ -5,43 +5,45 @@ using XTricks.Shared.Extensions;
 
 namespace XTricks.Geofencing
 {
-    public class LocationDetector : ILocationDetector
+    public class DefaultLocationDetector : ILocationDetector
     {
         public GeofenceDirection LocationExpectation => Monitored.Expectation;
         public MonitoredLocation Monitored { get; }
 
-        public LocationDetector(MonitoredLocation monitored)
+        public DefaultLocationDetector(MonitoredLocation monitored)
         {
             this.Monitored = monitored;
         }
 
-        public GeofenceDirection Detect(List<ILocation> coordinates)
+        public virtual GeofenceDirection Detect(List<ILocation> coordinates)
         {
             if (coordinates.Count < 2)
                 return GeofenceDirection.None;
 
+            var reversedCoordinates = Enumerable.Reverse(coordinates).ToList();
+
             if (this.LocationExpectation.HasFlag(GeofenceDirection.Enter))
             {
-                if (this.IsIn(coordinates))
+                if (this.IsIn(reversedCoordinates))
                     return GeofenceDirection.Enter;
             }
             if (this.LocationExpectation.HasFlag(GeofenceDirection.Exit))
             {
-                if (IsOut(coordinates))
+                if (IsOut(reversedCoordinates))
                     return GeofenceDirection.Exit;
             }
 
             return GeofenceDirection.None;
         }
 
-        protected virtual bool IsIn(IEnumerable<ILocation> candidates)
+        private bool IsIn(IEnumerable<ILocation> candidates)
         {
             var result = candidates.Take(2).All(x => x.DistanceTo(Monitored.Location).Meters <= Monitored.RadiusEnter.Meters);
 
             return result;
         }
 
-        protected virtual bool IsOut(IEnumerable<ILocation> candidates)
+        private bool IsOut(IEnumerable<ILocation> candidates)
         {
             var result = candidates.Take(3).All(x => x.DistanceTo(Monitored.Location).Meters >= Monitored.RadiusExit.Meters);
 

@@ -10,7 +10,7 @@ namespace XTricks.Geofencing.Droid
         /// </summary>
         public TimeSpan Interval { get; internal set; }
         /// <summary>
-        /// The priority taken from <see cref="Android.Gms.Location.LocationRequest""/>
+        /// The priority taken from <see cref="Android.Gms.Location.LocationRequest"/>
         /// </summary>
         public int Priority { get; internal set; }
         /// <summary>

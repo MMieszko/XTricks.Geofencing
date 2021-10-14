@@ -2,7 +2,6 @@ using FluentAssertions;
 using NUnit.Framework;
 using System.Linq;
 using System.Threading.Tasks;
-using XTricks.Geofencing.Storage;
 using XTricks.Shared.Models;
 
 namespace XTricks.Geofencing.Tests
@@ -14,7 +13,7 @@ namespace XTricks.Geofencing.Tests
         [SetUp]
         public void Setup()
         {
-            _geofencingService = new GeofencingService(new InMemoryLocationsStorage());
+            _geofencingService = new GeofencingService(new InMemoryLocationsStorage(20));
         }
 
         [Test]

@@ -30,42 +30,23 @@ namespace XTricks.Geofencing
         /// It is possible to track and enter events at once.
         /// </summary>
         public GeofenceDirection Expectation { get; }
-        /// <summary>
-        /// Determine if location should be kept after exit or enter event appears
-        /// </summary>
-        public bool RemoveAfterDetected { get; }
-        public virtual ILocationDetector Detector => new LocationDetector(this);
 
-        public MonitoredLocation(object key, double latitude, double longitude, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation, bool remove)
+        public virtual ILocationDetector Detector => new DefaultLocationDetector(this);
+
+        public MonitoredLocation(object key, double latitude, double longitude, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation)
         {
             if (radiusEnter >= radiusExit)
                 throw new ArgumentException("Enter radius cannot be higher or equal to radius exit");
 
-            if (key == null)
-                throw new ArgumentException("Key of location cannot be null");
-
-            this.Key = key;
+            this.Key = key ?? throw new ArgumentException("Key of location cannot be null");
             this.Location = new LocationLog(latitude, longitude);
             this.RadiusEnter = radiusEnter;
             this.RadiusExit = radiusExit;
             this.Expectation = expectation;
-            this.RemoveAfterDetected = remove;
-        }
-
-        public MonitoredLocation(object key, double latitude, double longitude, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation)
-                 : this(key, latitude, longitude, radiusEnter, radiusExit, expectation, false)
-        {
-
-        }
-
-        public MonitoredLocation(object key, ILocation location, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation, bool remove)
-                : this(key, location.Latitude, location.Longitude, radiusEnter, radiusExit, expectation, remove)
-        {
-
         }
 
         public MonitoredLocation(object key, ILocation location, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation)
-            : this(key, location, radiusEnter, radiusExit, expectation, false)
+                : this(key, location.Latitude, location.Longitude, radiusEnter, radiusExit, expectation)
         {
 
         }

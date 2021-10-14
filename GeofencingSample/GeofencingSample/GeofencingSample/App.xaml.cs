@@ -1,8 +1,4 @@
-﻿using GeofencingSample.Services;
-using GeofencingSample.Views;
-using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms;
 
 namespace GeofencingSample
 {
@@ -13,7 +9,6 @@ namespace GeofencingSample
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }
 
