@@ -4,9 +4,10 @@ using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
-using XTricks.Geofencing.Droid;
+
 using AndroidX.Core.App;
 using Plugin.Permissions;
+using XTricks.Geofencing.Android;
 
 namespace GeofencingSample.Droid
 {

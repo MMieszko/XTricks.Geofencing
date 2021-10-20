@@ -3,14 +3,14 @@ using System.Linq;
 using XTricks.Shared.Contracts;
 using XTricks.Shared.Extensions;
 
-namespace XTricks.Geofencing
+namespace XTricks.Geofencing.Abstractions
 {
-    public class DefaultLocationDetector : ILocationDetector
+    public class LocationDetector : ILocationDetector
     {
         public GeofenceDirection LocationExpectation => Monitored.Expectation;
         public MonitoredLocation Monitored { get; }
 
-        public DefaultLocationDetector(MonitoredLocation monitored)
+        public LocationDetector(MonitoredLocation monitored)
         {
             this.Monitored = monitored;
         }

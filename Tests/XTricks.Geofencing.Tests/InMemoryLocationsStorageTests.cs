@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using XTricks.Geofencing.Abstractions;
 
 namespace XTricks.Geofencing.Tests
 {

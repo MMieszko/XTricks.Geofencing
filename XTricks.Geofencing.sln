@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeofencingSample.Android", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeofencingSample.iOS", "GeofencingSample\GeofencingSample\GeofencingSample.iOS\GeofencingSample.iOS.csproj", "{B10CA781-0C2B-4D0F-A564-E29AEE519BE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeofencingSample", "GeofencingSample\GeofencingSample\GeofencingSample\GeofencingSample.csproj", "{DE58AE1A-4658-402F-9DA4-C7FB7D728262}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeofencingSample", "GeofencingSample\GeofencingSample\GeofencingSample\GeofencingSample.csproj", "{DE58AE1A-4658-402F-9DA4-C7FB7D728262}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

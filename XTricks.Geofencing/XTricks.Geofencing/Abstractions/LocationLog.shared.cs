@@ -1,7 +1,7 @@
 ﻿using System;
 using XTricks.Shared.Contracts;
 
-namespace XTricks.Geofencing
+namespace XTricks.Geofencing.Abstractions
 {
     public class LocationLog : ILocation
     {

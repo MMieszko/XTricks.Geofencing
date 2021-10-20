@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace XTricks.Geofencing
+namespace XTricks.Geofencing.Abstractions
 {
     public interface ILocationLogsStorage
     {

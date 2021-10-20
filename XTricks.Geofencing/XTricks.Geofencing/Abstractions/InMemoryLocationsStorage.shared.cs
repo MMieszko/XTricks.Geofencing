@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using XTricks.Shared.Collections;
 
-namespace XTricks.Geofencing
+namespace XTricks.Geofencing.Abstractions
 {
     public class InMemoryLocationsStorage : ILocationLogsStorage
     {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using XTricks.Geofencing;
+using XTricks.Geofencing.Abstractions;
 using XTricks.Shared.Contracts;
 using XTricks.Shared.Models;
 

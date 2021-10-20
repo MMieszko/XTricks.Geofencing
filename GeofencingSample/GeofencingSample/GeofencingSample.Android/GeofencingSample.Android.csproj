@@ -91,9 +91,9 @@
     <AndroidResource Include="Resources\drawable\icon_feed.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\XTricks.Geofencing\XTricks.Geofencing.Android\XTricks.Geofencing.Android.csproj">
-      <Project>{1493fac6-130f-410c-87b4-9294aabebb78}</Project>
-      <Name>XTricks.Geofencing.Android</Name>
+    <ProjectReference Include="..\..\..\XTricks.Geofencing\XTricks.Geofencing\XTricks.Geofencing.csproj">
+      <Project>{8fb5d710-66b1-4cb6-81ba-70fd340eba9f}</Project>
+      <Name>XTricks.Geofencing</Name>
     </ProjectReference>
     <ProjectReference Include="..\GeofencingSample\GeofencingSample.csproj">
       <Project>{35D3F4B6-A297-469B-BE75-508AC4D683B6}</Project>

@@ -2,7 +2,7 @@
 using XTricks.Shared.Contracts;
 using XTricks.Shared.Models;
 
-namespace XTricks.Geofencing
+namespace XTricks.Geofencing.Abstractions
 {
     public class MonitoredLocation
     {
@@ -31,7 +31,7 @@ namespace XTricks.Geofencing
         /// </summary>
         public GeofenceDirection Expectation { get; }
 
-        public virtual ILocationDetector Detector => new DefaultLocationDetector(this);
+        public virtual ILocationDetector Detector => new LocationDetector(this);
 
         public MonitoredLocation(object key, double latitude, double longitude, Distance radiusEnter, Distance radiusExit, GeofenceDirection expectation)
         {
@@ -50,5 +50,13 @@ namespace XTricks.Geofencing
         {
 
         }
+    }
+
+    [Flags]
+    public enum GeofenceDirection
+    {
+        None = 0,
+        Enter = 2,
+        Exit = 4
     }
 }

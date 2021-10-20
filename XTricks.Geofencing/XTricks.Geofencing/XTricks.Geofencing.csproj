@@ -1,33 +1,78 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.22">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-    <Authors>Mieszko Misztal</Authors>
-    <Company />
-    <PackageProjectUrl>https://github.com/MMieszko/XTricks.Geofencing</PackageProjectUrl>
-    <PackageIcon>xtricks_logo.png</PackageIcon>
-    <RepositoryUrl>https://github.com/MMieszko/XTricks.Geofencing</RepositoryUrl>
-    <PackageTags>xamarin.forms android xamrain geofancing background location gathering</PackageTags>
-    <Description>Xamarin forms library which allow to easy with quick startup use background geofencing. Monitor any locations with any range and get notified anytime your application needs it.</Description>
-    <PackageLicenseFile>mit_license.txt</PackageLicenseFile>
-  </PropertyGroup>
+    <TargetFrameworks>netstandard2.0;MonoAndroid10.0;Xamarin.iOS10</TargetFrameworks>
+    <AssemblyName>XTricks.Geofencing</AssemblyName>
+    <RootNamespace>XTricks.Geofencing</RootNamespace>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
+    <Version>1.0.0.0</Version>
+    <Authors>James Montemagno</Authors>
+    <PackageId>Xam.Plugin.Geolocator</PackageId>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageIconUrl>https://raw.githubusercontent.com/jamesmontemagno/GeolocatorPlugin/master/art/icon.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/jamesmontemagno/GeolocatorPlugin/blob/master/LICENSE</PackageLicenseUrl>
+    <Owners>JamesMontemagno</Owners>
+    <PackageProjectUrl>https://github.com/jamesmontemagno/GeolocatorPlugin</PackageProjectUrl>
+    <Summary>Easly access geolocation across Xamarin.iOS, Xamarin.Android, and Windows.</Summary>
+    <PackageTags>xamarin, xamarin.forms, plugin, plugin for xamarin, geolocation, geocoding, ios, android, uwp</PackageTags>
+    <Title>Geolocator Plugin for Xamarin and Windows</Title>
+    <Description>
+      Easly access geolocation across Xamarin.iOS, Xamarin.Android, and Windows.
+    </Description>
+    <Copyright>Copyright 2021</Copyright>
+    <RepositoryUrl>https://github.com/jamesmontemagno/GeolocatorPlugin</RepositoryUrl>
+    <PackageReleaseNotes>See: https://github.com/jamesmontemagno/GeolocatorPlugin </PackageReleaseNotes>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NeutralLanguage>en</NeutralLanguage>
+    <LangVersion>default</LangVersion>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <DebugType>portable</DebugType>
-    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>$(DefineConstants);</DefineConstants>
+
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)'=='Release' ">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- sourcelink: Declare that the Repository URL can be published to NuSpec -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- sourcelink: Embed source files that are not tracked by the source control manager to the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- sourcelink: Include PDB in the built .nupkg -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+  
+  <ItemGroup Condition=" '$(Configuration)'=='Release' ">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
+    <Compile Include="**\*.shared.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
+    <PackageReference Include="XTricks.Shared" Version="1.0.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Location" Version="118.0.0.1" />
+    <PackageReference Include="XTricks.Shared" Version="1.0.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <Compile Include="**\*.android.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
     <PackageReference Include="XTricks.Shared" Version="1.0.1" />
+    <Compile Include="**\*.apple.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\..\xtricks_logo.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
 </Project>

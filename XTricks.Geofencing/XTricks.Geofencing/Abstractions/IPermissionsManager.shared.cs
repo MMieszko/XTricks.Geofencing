@@ -1,4 +1,4 @@
-﻿namespace XTricks.Geofencing
+﻿namespace XTricks.Geofencing.Abstractions
 {
     public interface IPermissionsManager
     {

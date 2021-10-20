@@ -2,6 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using XTricks.Geofencing.Abstractions;
 using XTricks.Shared.Contracts;
 using XTricks.Shared.Models;
 

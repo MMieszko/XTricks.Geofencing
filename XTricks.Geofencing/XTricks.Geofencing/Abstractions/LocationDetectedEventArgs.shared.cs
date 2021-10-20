@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace XTricks.Geofencing
+namespace XTricks.Geofencing.Abstractions
 {
     public class LocationDetectedEventArgs : EventArgs
     {

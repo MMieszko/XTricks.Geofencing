@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace XTricks.Geofencing
+namespace XTricks.Geofencing.Abstractions
 {
     public class StartResult
     {
@@ -26,5 +26,11 @@ namespace XTricks.Geofencing
         {
             return value.Succeeded;
         }
+    }
+
+    public enum StartFailureType
+    {
+        Other = 0,
+        MissingPermissions = 1
     }
 }

@@ -4,15 +4,40 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XTricks.Geofencing.Abstractions;
 using XTricks.Shared.Contracts;
 
 namespace XTricks.Geofencing
 {
     public sealed class GeofencingService
     {
-        private static SemaphoreSlim _semaphore;
+        private static readonly SemaphoreSlim Semaphore;
         private static GeofencingService _instance;
-        private static ILocationProvider LocationProvider => DependencyService.Get<ILocationProvider>();
+        private static ILocationProvider LocationProvider
+        {
+            get
+            {
+                return DependencyService.Get<ILocationProvider>();
+//#if NETSTANDARD2_0
+//                return null;
+//#else
+//                return DependencyService.Get<ILocationProvider>();
+//#endif
+            }
+        }
+
+        private static IPermissionsManager PermissionsManager
+        {
+            get
+            {
+                return DependencyService.Get<IPermissionsManager>();
+//#if NETSTANDARD2_0
+//                return null;
+//#else
+//                return DependencyService.Get<IPermissionsManager>();
+//#endif
+            }
+        }
 
         private readonly ILocationLogsStorage _locationLogsStorage;
         private readonly List<MonitoredLocation> _monitoredLocations;
@@ -51,18 +76,12 @@ namespace XTricks.Geofencing
 
         static GeofencingService()
         {
-            _semaphore = new SemaphoreSlim(1);
+            Semaphore = new SemaphoreSlim(1);
         }
 
         public static GeofencingService Instance
         {
-            get
-            {
-                if (_instance == null)
-                    _instance = new GeofencingService(new InMemoryLocationsStorage(20));
-
-                return _instance;
-            }
+            get { return _instance ??= new GeofencingService(new InMemoryLocationsStorage(20)); }
         }
 
         internal GeofencingService(ILocationLogsStorage storage)
@@ -79,8 +98,7 @@ namespace XTricks.Geofencing
         {
             try
             {
-                var permissionsManager = DependencyService.Get<IPermissionsManager>();
-                var permissionCheckResult = permissionsManager.Check();
+                var permissionCheckResult = PermissionsManager.Check();
 
                 if (!permissionCheckResult)
                     return StartResult.CreateFailed(StartFailureType.MissingPermissions, null, permissionCheckResult.MissingPermission);
@@ -223,11 +241,11 @@ namespace XTricks.Geofencing
             this._monitoredLocations.Clear();
         }
 
-        internal async Task LocationChangedAsync(LocationLog log)
+        public async Task LocationChangedAsync(LocationLog log)
         {
             try
             {
-                await _semaphore.WaitAsync();
+                await Semaphore.WaitAsync();
 
                 this.LocationChanged?.Invoke(this, new LocationChangedEventArgs(log));
 
@@ -259,7 +277,7 @@ namespace XTricks.Geofencing
             }
             finally
             {
-                _semaphore.Release();
+                Semaphore.Release();
             }
         }
     }
