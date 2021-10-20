@@ -1,9 +1,11 @@
 ﻿using Plugin.Permissions;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using XTricks.Geofencing;
 using XTricks.Geofencing.Abstractions;
 using XTricks.Shared.Contracts;
@@ -139,6 +141,9 @@ namespace GeofencingSample.ViewModels
 
         private void GeofenceFired(object sender, LocationDetectedEventArgs e)
         {
+
+            Debug.Write($"We {(e.Direction == GeofenceDirection.Exit ? "exited" : "entered")} into {e.Location.Key}");
+
             this.Logs.Add($"[{e.DateTime.Hour}:{e.DateTime.Minute}:{e.DateTime.Second}]  [{e.Location.Key}] ->  [{e.Direction}]");
 
             this.GeofenceStatus = e.Direction;
