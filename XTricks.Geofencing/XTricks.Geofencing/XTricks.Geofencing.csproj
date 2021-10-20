@@ -5,13 +5,13 @@
     <AssemblyName>XTricks.Geofencing</AssemblyName>
     <RootNamespace>XTricks.Geofencing</RootNamespace>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
-    <Version>1.0.0.0</Version>
+    <Version>0.1.9.0</Version>
     <Authors>Mieszko Misztal</Authors>
     <PackageId>XTricks.Geofencing</PackageId>
     <PackOnBuild>true</PackOnBuild>
-    <PackageIconUrl>https://raw.githubusercontent.com/MMieszko/XTricks.Shared/master/Resources/xtricks_logo.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/MMieszko/XTricks.Shared/master/Resources/xtricks-logo.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/MMieszko/XTricks.Shared/blob/master/Resources/LICENSE</PackageLicenseUrl>
     <Owners>MieszkoMisztal</Owners>
     <PackageProjectUrl>https://github.com/MMieszko/XTricks.Geofencing</PackageProjectUrl>
@@ -51,18 +51,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
     <Compile Include="**\*.shared.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
     <PackageReference Include="XTricks.Shared" Version="1.0.1" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
     <PackageReference Include="Xamarin.GooglePlayServices.Location" Version="118.0.0.1" />
     <PackageReference Include="XTricks.Shared" Version="1.0.1" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
