@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XTricks.Geofencing.Android", "XTricks.Geofencing\XTricks.Geofencing.Android\XTricks.Geofencing.Android.csproj", "{1493FAC6-130F-410C-87B4-9294AABEBB78}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XTricks.Geofencing.iOS", "XTricks.Geofencing\XTricks.Geofencing.iOS\XTricks.Geofencing.iOS.csproj", "{8483DA00-A1A3-4345-8C66-41E6609987EA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XTricks.Geofencing", "XTricks.Geofencing\XTricks.Geofencing\XTricks.Geofencing.csproj", "{8FB5D710-66B1-4CB6-81BA-70FD340EBA9F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A0C526E7-CE11-4AED-A4AA-4483B5CBEDE1}"
@@ -31,34 +27,6 @@ Global
 		Release|iPhoneSimulator = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Debug|iPhone.Deploy.0 = Debug|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Debug|iPhoneSimulator.Deploy.0 = Debug|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Release|iPhone.Build.0 = Release|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Release|iPhone.Deploy.0 = Release|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{1493FAC6-130F-410C-87B4-9294AABEBB78}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
-		{8483DA00-A1A3-4345-8C66-41E6609987EA}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
-		{8483DA00-A1A3-4345-8C66-41E6609987EA}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{8483DA00-A1A3-4345-8C66-41E6609987EA}.Debug|iPhone.Build.0 = Debug|iPhone
-		{8483DA00-A1A3-4345-8C66-41E6609987EA}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{8483DA00-A1A3-4345-8C66-41E6609987EA}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{8483DA00-A1A3-4345-8C66-41E6609987EA}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
-		{8483DA00-A1A3-4345-8C66-41E6609987EA}.Release|iPhone.ActiveCfg = Release|iPhone
-		{8483DA00-A1A3-4345-8C66-41E6609987EA}.Release|iPhone.Build.0 = Release|iPhone
-		{8483DA00-A1A3-4345-8C66-41E6609987EA}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{8483DA00-A1A3-4345-8C66-41E6609987EA}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{8FB5D710-66B1-4CB6-81BA-70FD340EBA9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8FB5D710-66B1-4CB6-81BA-70FD340EBA9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FB5D710-66B1-4CB6-81BA-70FD340EBA9F}.Debug|iPhone.ActiveCfg = Debug|Any CPU

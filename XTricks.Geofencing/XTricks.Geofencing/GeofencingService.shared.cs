@@ -13,31 +13,8 @@ namespace XTricks.Geofencing
     {
         private static readonly SemaphoreSlim Semaphore;
         private static GeofencingService _instance;
-        private static ILocationProvider LocationProvider
-        {
-            get
-            {
-                return DependencyService.Get<ILocationProvider>();
-//#if NETSTANDARD2_0
-//                return null;
-//#else
-//                return DependencyService.Get<ILocationProvider>();
-//#endif
-            }
-        }
-
-        private static IPermissionsManager PermissionsManager
-        {
-            get
-            {
-                return DependencyService.Get<IPermissionsManager>();
-//#if NETSTANDARD2_0
-//                return null;
-//#else
-//                return DependencyService.Get<IPermissionsManager>();
-//#endif
-            }
-        }
+        private static ILocationProvider LocationProvider => DependencyService.Get<ILocationProvider>();
+        private static IPermissionsManager PermissionsManager => DependencyService.Get<IPermissionsManager>();
 
         private readonly ILocationLogsStorage _locationLogsStorage;
         private readonly List<MonitoredLocation> _monitoredLocations;
@@ -65,7 +42,7 @@ namespace XTricks.Geofencing
         public bool IsRunning { get; private set; }
 
         /// <summary>
-        /// Provicdes the readonly collection of current monitored locations
+        /// Provides the readonly collection of current monitored locations
         /// </summary>
         public IReadOnlyCollection<MonitoredLocation> MonitoredLocations => _monitoredLocations.AsReadOnly();
 
@@ -161,7 +138,7 @@ namespace XTricks.Geofencing
         /// Return <see cref="MonitoredLocation"/> whenever service contains it
         /// If such location does not exists the method will return null.
         /// </summary>
-        /// <param name="key">Key identitifer of <see cref="MonitoredLocation"/></param>
+        /// <param name="key">Key identifier of <see cref="MonitoredLocation"/></param>
         /// <returns>Monitored location</returns>
         public MonitoredLocation GetLocation(object key)
         {
