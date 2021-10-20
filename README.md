@@ -82,14 +82,15 @@ GeofencingService.Instance.AddLocation(playa);
 
 GeofencingService.Instance.Start();
 
-...
+.
+.
+.
 
 private void GeofenceFired(object sender, LocationDetectedEventArgs e)
 {
     Debug.Write($"We {(e.Direction == GeofenceDirection.Exit ? "exited" : "entered")} into {e.Location.Key}");
 }
-
-```` 
+ 
 ```
 
 In above example we created MonitoredLocation object which we would like to track. The first parameter is an key with the object type. This must
