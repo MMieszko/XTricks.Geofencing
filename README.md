@@ -72,7 +72,6 @@ Firstly lets get some location which we want to track. For example lets monitor 
 Playa de Roque Burmejo (28.5795767,-16.136934). To add the location lets use our Geofencing Service.
 
 
-```` 
 ```
 GeofencingService.Instance.LocationDetected += GeofenceFired;
 
