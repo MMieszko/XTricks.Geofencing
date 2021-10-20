@@ -4,7 +4,7 @@ The library which gives quick and easy ability to track whenever user entered or
 You can download the library from [NuGet](https://www.nuget.org/packages/XTricks.Geofencing/0.1.9)
 
 
-#Android
+# Android
 The application is using [WakeLock](https://developer.android.com/training/scheduling/wakelock) feature to keep device awake when app goes into 
 background. Keep in mind to use it only when nessesary 
 
@@ -23,7 +23,6 @@ Make sure to add following permissions into your Manifest file
 Inside your MainAcitivty.cs class add following code in OnCreate() method
 
 ```` 
-```
 GeofencingInitializer.Initialize(builder =>
             {
                 return builder
@@ -32,7 +31,6 @@ GeofencingInitializer.Initialize(builder =>
                        .WithNotification(CreateNotification())
                        .Build();
             });
-```
 ````
 
 In above example you have builder which initializes the geolocation gathering by Android aswell as Notification to display.
@@ -40,7 +38,6 @@ The Notification is mandatory in order to use Android service. Here is an exampl
 
 
 ```` 
-```
 private Notification CreateNotification()
         {
             var name = "MyChannel";
@@ -64,15 +61,14 @@ private Notification CreateNotification()
             return builder.Build();
 
         }
-```
 ````
 
-#iOS
+# iOS
 
 Not implemented yet
 
 
-#Usage
+# Usage
 Feel free to check the Sample application inside the repositroy. The most basic usage would be as below.
 Firstly lets get some location which we want to track. For example lets monitor geofencing for
 Playa de Roque Burmejo (28.5795767,-16.136934). To add the location lets use our Geofencing Service.
