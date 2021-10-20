@@ -107,10 +107,10 @@ namespace XTricks.Geofencing
         }
 
         /// <summary>
-        /// Pauses the services. Pause is basically turning off and turnign on after given period of time
+        /// Pauses the services. Pause is basically turning off and turning on after given period of time
         /// </summary>
-        /// <param name="delay">Puase duration</param>
-        /// <param name="token">Token and its cancellation which is able to break the delay and bring back service running immeadetly</param>
+        /// <param name="delay">Pause duration</param>
+        /// <param name="token">Token and its cancellation which is able to break the delay and bring back service running immediately</param>
         /// <returns></returns>
         public async Task PauseAsync(TimeSpan delay, CancellationToken token = default)
         {

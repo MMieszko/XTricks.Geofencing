@@ -8,22 +8,22 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
     <Version>1.0.0.0</Version>
-    <Authors>James Montemagno</Authors>
-    <PackageId>Xam.Plugin.Geolocator</PackageId>
+    <Authors>Mieszko Misztal</Authors>
+    <PackageId>XTricks.Geofencing</PackageId>
     <PackOnBuild>true</PackOnBuild>
-    <PackageIconUrl>https://raw.githubusercontent.com/jamesmontemagno/GeolocatorPlugin/master/art/icon.png</PackageIconUrl>
-    <PackageLicenseUrl>https://github.com/jamesmontemagno/GeolocatorPlugin/blob/master/LICENSE</PackageLicenseUrl>
-    <Owners>JamesMontemagno</Owners>
-    <PackageProjectUrl>https://github.com/jamesmontemagno/GeolocatorPlugin</PackageProjectUrl>
-    <Summary>Easly access geolocation across Xamarin.iOS, Xamarin.Android, and Windows.</Summary>
-    <PackageTags>xamarin, xamarin.forms, plugin, plugin for xamarin, geolocation, geocoding, ios, android, uwp</PackageTags>
-    <Title>Geolocator Plugin for Xamarin and Windows</Title>
+    <PackageIconUrl>https://raw.githubusercontent.com/MMieszko/XTricks.Shared/master/Resources/xtricks_logo.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/MMieszko/XTricks.Shared/blob/master/Resources/LICENSE</PackageLicenseUrl>
+    <Owners>MieszkoMisztal</Owners>
+    <PackageProjectUrl>https://github.com/MMieszko/XTricks.Geofencing</PackageProjectUrl>
+    <Summary>Easly background geoencing library across Xamarin.Android.</Summary>
+    <PackageTags>xamarin, geofencing, geofence, xamarin.forms, plugin, plugin for xamarin, geolocation, geocoding, android</PackageTags>
+    <Title>Geofencing library for Xamarin</Title>
     <Description>
-      Easly access geolocation across Xamarin.iOS, Xamarin.Android, and Windows.
+      Easy way of tracking localization of device with background geofencing
     </Description>
     <Copyright>Copyright 2021</Copyright>
-    <RepositoryUrl>https://github.com/jamesmontemagno/GeolocatorPlugin</RepositoryUrl>
-    <PackageReleaseNotes>See: https://github.com/jamesmontemagno/GeolocatorPlugin </PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/MMieszko/XTricks.Geofencing</RepositoryUrl>
+    <PackageReleaseNotes>See: https://github.com/MMieszko/XTricks.Geofencing </PackageReleaseNotes>
 
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
