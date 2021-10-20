@@ -1,6 +1,6 @@
 # XTricks.Geofencing
 
-The library which gives quick and easy ability to track whenever user entered or exited given location. The geofencing is working in aswell background and foregourd
+The library which gives quick and easy ability to track whenever user entered or exited given location. The geofencing is working in aswell background and foreground
 You can download the library from [NuGet](https://www.nuget.org/packages/XTricks.Geofencing/0.1.9)
 
 
