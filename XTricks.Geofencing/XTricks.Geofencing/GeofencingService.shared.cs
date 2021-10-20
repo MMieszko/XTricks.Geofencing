@@ -13,8 +13,8 @@ namespace XTricks.Geofencing
     {
         private static readonly SemaphoreSlim Semaphore;
         private static GeofencingService _instance;
-        private static ILocationProvider LocationProvider => DependencyService.Get<ILocationProvider>();
-        private static IPermissionsManager PermissionsManager => DependencyService.Get<IPermissionsManager>();
+        private static ILocationProvider LocationProvider => DependencyService.Get<ILocationProvider>() ?? throw new ConfigurationException("Configuration exception occurred. Make sure you call GeofencingInitializer in your MainActivity. Keep in mind that iOS version is not yet available");
+        private static IPermissionsManager PermissionsManager => DependencyService.Get<IPermissionsManager>() ?? throw new ConfigurationException("Configuration exception occurred. Make sure you call GeofencingInitializer in your MainActivity. Keep in mind that iOS version is not yet available");
 
         private readonly ILocationLogsStorage _locationLogsStorage;
         private readonly List<MonitoredLocation> _monitoredLocations;

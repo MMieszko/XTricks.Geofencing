@@ -60,6 +60,9 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="XTricks.Geofencing">
+      <Version>0.1.9</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -91,10 +94,6 @@
     <AndroidResource Include="Resources\drawable\icon_feed.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\XTricks.Geofencing\XTricks.Geofencing\XTricks.Geofencing.csproj">
-      <Project>{8fb5d710-66b1-4cb6-81ba-70fd340eba9f}</Project>
-      <Name>XTricks.Geofencing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GeofencingSample\GeofencingSample.csproj">
       <Project>{35D3F4B6-A297-469B-BE75-508AC4D683B6}</Project>
       <Name>GeofencingSample</Name>
