@@ -92,13 +92,11 @@ namespace GeofencingSample.ViewModels
             GeofencingService.Instance.LocationChanged += LocationChanged;
             GeofencingService.Instance.LocationDetected += GeofenceFired;
 
-            var lidl = new MonitoredLocation("Lidl", 51.6174298, 15.3111643, Distance.FromMeters(100), Distance.FromMeters(200), GeofenceDirection.Enter | GeofenceDirection.Exit);
-            var dom = new MonitoredLocation("Dom", 51.6127332, 15.322100, Distance.FromMeters(100), Distance.FromMeters(200), GeofenceDirection.Enter | GeofenceDirection.Exit);
-            var polo = new MonitoredLocation("Polo", 51.6127328, 15.331042, Distance.FromMeters(100), Distance.FromMeters(200), GeofenceDirection.Enter | GeofenceDirection.Exit);
-            var kaufland = new MonitoredLocation("Kaufland", 51.6163051, 15.313698, Distance.FromMeters(100), Distance.FromMeters(200), GeofenceDirection.Enter | GeofenceDirection.Exit);
+            this.MonitoredLocation = new MonitoredLocation("Playa De Roque Burmejo", 28.5799199, -16.1348832,
+                Distance.FromMeters(100), Distance.FromMeters(150), GeofenceDirection.Enter);
 
 
-            GeofencingService.Instance.AddLocations(new[] { lidl, dom, polo, kaufland });
+            GeofencingService.Instance.AddLocation(this.MonitoredLocation);
         }
 
         private async Task PauseGeofencingAsync()
@@ -141,8 +139,6 @@ namespace GeofencingSample.ViewModels
 
         private void GeofenceFired(object sender, LocationDetectedEventArgs e)
         {
-
-            Debug.Write($"We {(e.Direction == GeofenceDirection.Exit ? "exited" : "entered")} into {e.Location.Key}");
 
             this.Logs.Add($"[{e.DateTime.Hour}:{e.DateTime.Minute}:{e.DateTime.Second}]  [{e.Location.Key}] ->  [{e.Direction}]");
 

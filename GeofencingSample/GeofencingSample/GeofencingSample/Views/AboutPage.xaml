@@ -29,6 +29,15 @@
                 <Label Grid.Column="1" Grid.Row="1">
                     <Label.FormattedText>
                         <FormattedString>
+                            <Span  Text="Monitoring  "/>
+                            <Span  Text="{Binding MonitoredLocation.Key}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Label Grid.Column="1" Grid.Row="1">
+                    <Label.FormattedText>
+                        <FormattedString>
                             <Span  Text="Last location  "/>
                             <Span  Text="{Binding LastLocation.Latitude}"/>
                             <Span  Text="{Binding LastLocation.Longitude}"/>
